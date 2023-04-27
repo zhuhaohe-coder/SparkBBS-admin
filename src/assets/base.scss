@@ -24,3 +24,25 @@
   background: #ededed;
   border-radius: 10px;
 }
+
+// 去除边框
+.el-menu {
+  border-right: none;
+}
+
+.el-menu-item {
+  background: #353544;
+}
+
+.el-menu-item.is-active {
+  color: #fff;
+  background: var(--el-color-primary);
+}
+
+//aside收起的样式
+.el-popper {
+  border: none;
+  .el-menu--popup {
+    padding: 0;
+  }
+}
