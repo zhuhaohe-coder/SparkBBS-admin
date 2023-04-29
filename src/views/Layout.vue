@@ -59,12 +59,18 @@
           </div>
         </el-header>
         <el-main class="main">
-          <el-tabs>
+          <el-tabs
+            type="card"
+            v-if="tabList.length > 0"
+            @tab-change="tabClick"
+            @tab-remove="removeTab"
+            v-model="defaultActive"
+          >
             <el-tab-pane
-              :v-for="(item, index) in tabList"
+              v-for="(tab, index) in tabList"
               :key="index"
-              :name="item.path"
-              :label="item.menuName"
+              :name="tab.path"
+              :label="tab.menuName"
               :closable="tabList.length > 1"
             >
             </el-tab-pane>
@@ -77,10 +83,11 @@
 </template>
 
 <script setup>
-import { ref, onMounted, nextTick, onBeforeMount, watch, toRefs } from "vue";
-import { useRoute } from "vue-router";
+import { ref, watch } from "vue";
+import { useRoute, useRouter } from "vue-router";
 
 const route = useRoute();
+const router = useRouter();
 const asideWidth = ref(250);
 
 // 默认选中
@@ -133,22 +140,18 @@ const menuList = [
   },
 ];
 
+const menuMap = {};
 const init = () => {
   menuList.forEach((item) => {
     defaultOpeneds.value.push(item.path);
+    item.children.forEach((subItem) => {
+      menuMap[subItem.path] = subItem;
+    });
   });
 };
 
 // 面包屑
 const menuBreadCrumbList = ref(null);
-watch(
-  () => route,
-  () => {
-    defaultActive.value = route.path;
-    menuBreadCrumbList.value = route.matched;
-  },
-  { immediate: true, deep: true }
-);
 
 // 收起关闭菜单
 const menuCollapse = ref(false);
@@ -164,10 +167,43 @@ const opMenu = () => {
 
 //tab操作
 const tabList = ref([]);
+const tabClick = (tabName) => {
+  router.push(tabName);
+};
+const removeTab = (tabName) => {
+  let currentTab = defaultActive.value;
+  // 关闭当前选中的标签
+  if (tabName === currentTab) {
+    tabList.value.forEach((tab, index) => {
+      if (tab.path === tabName) {
+        const nextTab = tabList.value[index + 1] || tabList.value[index - 1];
+        if (nextTab) currentTab = nextTab.path;
+      }
+    });
+  }
+  tabList.value = tabList.value.filter((tab) => tab.path !== tabName);
+  if (currentTab !== defaultActive.value) {
+    router.push(currentTab);
+  }
+};
 
-onBeforeMount(() => {
-  init();
-});
+init();
+
+watch(
+  () => route,
+  () => {
+    defaultActive.value = route.path;
+    menuBreadCrumbList.value = route.matched;
+    //添加标签
+    const currentMenu = tabList.value.find(
+      (item) => item.path === defaultActive.value
+    );
+    if (!currentMenu) {
+      tabList.value.push(menuMap[route.path]);
+    }
+  },
+  { immediate: true, deep: true }
+);
 </script>
 
 <style lang="scss" scoped>
@@ -202,8 +238,5 @@ onBeforeMount(() => {
   .menu-bread {
     margin-left: 10px;
   }
-}
-.main {
-  background: pink;
 }
 </style>
