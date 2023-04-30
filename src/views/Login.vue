@@ -23,6 +23,7 @@
             v-model.trim="formData.password"
             type="password"
             size="large"
+            show-password
           >
             <template #prefix>
               <span class="iconfont icon-password"></span>

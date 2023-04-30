@@ -41,6 +41,8 @@ app.config.globalProperties.globalInfo = {
   bodyWidth: 1260,
   avatarUrl: "/api/file/getAvatar/",
   imageUrl: "/api/file/getImage/",
+  // 访客端地址
+  webDomain: "http://www.baidu.com",
 };
 //定义全局方法
 app.config.globalProperties.Verify = Verify;

@@ -57,26 +57,25 @@
         </template>
       </template>
       <!-- 分页 -->
-      <div class="pagination" v-if="showPagination">
-        <el-pagination
-          v-if="dataSource.totalCount"
-          background
-          :total="dataSource.totalCount"
-          :page-sizes="[15, 30, 50, 100]"
-          :page-size="dataSource.pageSize"
-          :current-page.sync="dataSource.pageNo"
-          layout="total,sizes,prev,pager,next,jumper"
-          @size-change="handlePageSizeChange"
-          @current-change="handlePageNoChange"
-          style="text-align: right"
-        ></el-pagination>
-      </div>
     </el-table>
+    <div class="pagination" v-if="showPagination">
+      <el-pagination
+        v-if="dataSource.totalCount"
+        background
+        :total="dataSource.totalCount"
+        :page-sizes="[15, 30, 50, 100]"
+        :page-size="dataSource.pageSize"
+        :current-page.sync="dataSource.pageNo"
+        layout="total,sizes,prev,pager,next,jumper"
+        @size-change="handlePageSizeChange"
+        @current-change="handlePageNoChange"
+        style="text-align: right"
+      ></el-pagination>
+    </div>
   </div>
 </template>
 
 <script setup>
-import { rowKey } from "element-plus/es/components/table-v2/src/common";
 import { ref } from "vue";
 const dataTable = ref(null);
 
@@ -110,8 +109,8 @@ const props = defineProps({
     default: true,
   },
 });
-// 顶部60 内容区域距离顶部20 内容上下内间距15*2 分页区域高度46
-const topHeight = 60 + 20 + 30 + 46;
+// 顶部200 内容区域距离顶部20 内容上下内间距15*2 分页区域高度46
+const topHeight = 200 + 20 + 30 + 46;
 const tableHeight = ref(
   props.options.tableHeight ||
     window.innerHeight - topHeight - props.options.extHeight
@@ -141,8 +140,8 @@ const handleRowClick = (row) => {
   emit("rowClick", row);
 };
 // 行选中
-const handleSelectionChange = (row) => {
-  emit("rowSelected", row);
+const handleSelectionChange = (rows) => {
+  emit("rowSelected", rows);
 };
 // 切换每页的大小
 const handlePageSizeChange = (size) => {
