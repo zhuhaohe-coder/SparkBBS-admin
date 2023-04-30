@@ -24,7 +24,11 @@
   background: #ededed;
   border-radius: 10px;
 }
-
+:root {
+  --link: #409eff;
+  --pink: #ff6699;
+  --text2: #61666d;
+}
 // 去除边框
 .el-menu {
   border-right: none;
@@ -45,4 +49,11 @@
   .el-menu--popup {
     padding: 0;
   }
+}
+
+// 链接的样式
+.a-link {
+  color: var(--link);
+  text-decoration: none;
+  cursor: pointer;
 }

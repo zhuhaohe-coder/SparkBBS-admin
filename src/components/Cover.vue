@@ -1,6 +1,7 @@
 <template>
   <div class="cover" :style="{ height: size + 'px' }">
     <el-image
+      class="image"
       :style="{ width: size + 'px', height: size + 'px' }"
       fit="cover"
       :src="cover ? proxy.globalInfo.imageUrl + cover : localCover"
@@ -28,7 +29,8 @@ const props = defineProps({
 
 <style lang="scss" scoped>
 .cover {
-  border-radius: 10px;
-  overflow: hidden;
+  .image {
+    border-radius: 5px;
+  }
 }
 </style>
