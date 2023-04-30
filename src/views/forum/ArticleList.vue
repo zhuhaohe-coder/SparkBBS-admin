@@ -210,9 +210,11 @@
       </template>
     </Table>
   </div>
+  <ArticleBoard ref="articleBoardRef" @reload="loadDataList"></ArticleBoard>
 </template>
 
 <script setup>
+import ArticleBoard from "@/views/forum/ArticleBoard.vue";
 import { ref, getCurrentInstance } from "vue";
 const { proxy } = getCurrentInstance();
 
@@ -312,6 +314,7 @@ const loadDataList = async () => {
   if (params.boardIds?.length === 1) {
     params.pBoardId = params.boardIds[0];
   } else if (params.boardIds?.length === 2) {
+    params.pBoardId = params.boardIds[0];
     params.boardId = params.boardIds[1];
   }
   delete params.boardIds;
@@ -327,7 +330,10 @@ const setRowSelect = (rows) => {};
 const showComment = (articleId) => {};
 const showAttachment = (nickName, articleId) => {};
 // 修改版块
-const updateBoard = (row) => {};
+const articleBoardRef = ref(null);
+const updateBoard = (row) => {
+  articleBoardRef.value.updateBoard(row);
+};
 // 置顶/取消置顶
 const topArticle = (row) => {};
 const delArticle = (row) => {};
