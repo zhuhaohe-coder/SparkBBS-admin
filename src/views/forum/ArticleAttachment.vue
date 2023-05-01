@@ -9,7 +9,7 @@
   >
     <el-form :model="formData" label-width="120px">
       <el-form-item label="发布人" :style="{ alignItems: 'center' }">
-        <Avatar :userId="formData.userId" :width="40"></Avatar>
+        <Avatar :userId="formData.userId" :size="40"></Avatar>
         <span :style="{ marginLeft: '5px' }">{{ formData.nickName }}</span>
       </el-form-item>
       <el-form-item label="文件名">

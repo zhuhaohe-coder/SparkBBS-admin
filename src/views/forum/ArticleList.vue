@@ -214,11 +214,14 @@
   <ArticleBoard ref="articleBoardRef" @reload="loadDataList"></ArticleBoard>
   <!-- 附件详情 -->
   <ArticleAttachment ref="articleAttachment"></ArticleAttachment>
+  <!-- 评论详情 -->
+  <ArticleComment ref="articleComment"></ArticleComment>
 </template>
 
 <script setup>
 import ArticleBoard from "@/views/forum/ArticleBoard.vue";
 import ArticleAttachment from "@/views/forum/ArticleAttachment.vue";
+import ArticleComment from "@/views/forum/ArticleComment.vue";
 import { ref, getCurrentInstance } from "vue";
 const { proxy } = getCurrentInstance();
 
@@ -367,8 +370,10 @@ const setRowSelect = (rows) => {
     selectBatchList.value.push(item.articleId);
   });
 };
-
-const showComment = (articleId) => {};
+const articleComment = ref(null);
+const showComment = (articleId) => {
+  articleComment.value.show(articleId);
+};
 
 const articleAttachment = ref(null);
 const showAttachment = (nickName, articleId) => {
