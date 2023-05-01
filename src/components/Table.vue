@@ -113,7 +113,8 @@ const props = defineProps({
 const topHeight = 200 + 20 + 30 + 46;
 const tableHeight = ref(
   props.options.tableHeight ||
-    window.innerHeight - topHeight - props.options.extHeight
+    window.innerHeight - topHeight - props.options.extHeight ||
+    0
 );
 // 初始化
 const init = () => {

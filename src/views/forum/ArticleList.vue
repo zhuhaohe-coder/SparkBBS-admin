@@ -221,6 +221,9 @@ const { proxy } = getCurrentInstance();
 const api = {
   loadDataList: "/forum/loadArticle",
   loadBoard: "/board/loadBoard",
+  auditArticle: "/forum/auditArticle",
+  delArticle: "/forum/delArticle",
+  topArticle: "/forum/topArticle",
 };
 
 // 搜索
@@ -246,11 +249,40 @@ const loadBoardList = async () => {
 loadBoardList();
 
 // 批量操作
-const auditBatch = () => {};
-const delBatch = () => {};
+const auditBatch = () => {
+  proxy.Confirm("你确定要批量审核么?", async () => {
+    const result = await proxy.Request({
+      url: api.auditArticle,
+      params: {
+        articleIds: selectBatchList.value.join(","),
+      },
+    });
+    if (!result) return;
+    tableRef.value.clearSelection();
+    proxy.Message.success("审核成功!");
+    loadDataList();
+  });
+};
+const delBatch = () => {
+  proxy.Confirm("你确定要批量删除么?", async () => {
+    const result = await proxy.Request({
+      url: api.delArticle,
+      params: {
+        articleIds: selectBatchList.value.join(","),
+      },
+    });
+    if (!result) return;
+    tableRef.value.clearSelection();
+    proxy.Message.success("删除成功!");
+    loadDataList();
+  });
+};
 
 const tableRef = ref(null);
-const tableOptions = ref();
+const tableOptions = ref({
+  selectType: "checkbox",
+  extHeight: 0,
+});
 const columns = [
   {
     label: "用户信息",
@@ -325,7 +357,12 @@ const loadDataList = async () => {
   if (!result) return;
   tableData.value = result.data;
 };
-const setRowSelect = (rows) => {};
+const setRowSelect = (rows) => {
+  selectBatchList.value = [];
+  rows.forEach((item) => {
+    selectBatchList.value.push(item.articleId);
+  });
+};
 
 const showComment = (articleId) => {};
 const showAttachment = (nickName, articleId) => {};
@@ -335,10 +372,48 @@ const updateBoard = (row) => {
   articleBoardRef.value.updateBoard(row);
 };
 // 置顶/取消置顶
-const topArticle = (row) => {};
-const delArticle = (row) => {};
+const topArticle = (row) => {
+  const modalText = row.topType === 0 ? "设为置顶" : "取消置顶";
+  proxy.Confirm(`你确定要将文章《${row.title}》${modalText}么?`, async () => {
+    const result = await proxy.Request({
+      url: api.topArticle,
+      params: {
+        articleId: row.articleId,
+        topType: row.topType === 0 ? 1 : 0,
+      },
+    });
+    if (!result) return;
+    proxy.Message.success(`${modalText}成功`);
+    loadDataList();
+  });
+};
+const delArticle = (row) => {
+  proxy.Confirm(`你确定要删除《${row.title}》么?`, async () => {
+    const result = await proxy.Request({
+      url: api.delArticle,
+      params: {
+        articleIds: row.articleId,
+      },
+    });
+    if (!result) return;
+    proxy.Message.success("删除成功!");
+    loadDataList();
+  });
+};
 // 审核
-const audit = (row) => {};
+const audit = (row) => {
+  proxy.Confirm(`你确定要审核《${row.title}》么?`, async () => {
+    const result = await proxy.Request({
+      url: api.auditArticle,
+      params: {
+        articleIds: row.articleId,
+      },
+    });
+    if (!result) return;
+    proxy.Message.success("审核成功!");
+    loadDataList();
+  });
+};
 </script>
 
 <style lang="scss" scoped>
