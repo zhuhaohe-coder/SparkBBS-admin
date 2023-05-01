@@ -1,107 +1,107 @@
 <template>
+  <div class="top-panel">
+    <el-form :model="searchFormData" label-width="50px">
+      <el-row>
+        <el-col :span="4">
+          <el-form-item label="标题" prop="titleFuzzy">
+            <el-input
+              clearable
+              placeholder="请输入标题"
+              v-model.trim="searchFormData.titleFuzzy"
+              @keyup.native="loadDataList"
+            ></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :span="4">
+          <el-form-item label="昵称" prop="nickNameFuzzy">
+            <el-input
+              clearable
+              placeholder="请输入昵称"
+              v-model.trim="searchFormData.nickNameFuzzy"
+              @keyup.native="loadDataList"
+            ></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :span="4">
+          <el-form-item label="版块" prop="boardIds">
+            <el-cascader
+              clearable
+              :options="boardList"
+              placeholder="请选择版块"
+              v-model.trim="searchFormData.boardIds"
+              :style="{ width: '100%' }"
+              :props="boardProps"
+            />
+          </el-form-item>
+        </el-col>
+        <el-col :span="4">
+          <el-form-item label="附件" prop="attachmentType">
+            <el-select
+              clearable
+              placeholder="请选择"
+              v-model.trim="searchFormData.attachmentType"
+              :style="{ width: '100%' }"
+            >
+              <el-option :value="1" label="有附件"></el-option>
+              <el-option :value="0" label="无附件"></el-option>
+            </el-select>
+          </el-form-item>
+        </el-col>
+        <el-col :span="4">
+          <el-form-item label="状态" prop="status">
+            <el-select
+              clearable
+              placeholder="请选择状态"
+              v-model.trim="searchFormData.status"
+              :style="{ width: '100%' }"
+            >
+              <el-option :value="-1" label="已删除"></el-option>
+              <el-option :value="0" label="待审核"></el-option>
+              <el-option :value="1" label="已审核"></el-option>
+            </el-select>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="4">
+          <el-form-item label="置顶" prop="topType">
+            <el-select
+              clearable
+              placeholder="请选择"
+              v-model.trim="searchFormData.topType"
+              :style="{ width: '100%' }"
+            >
+              <el-option :value="0" label="未置顶"></el-option>
+              <el-option :value="1" label="已置顶"></el-option>
+            </el-select>
+          </el-form-item>
+        </el-col>
+        <el-col :span="4" :style="{ paddingLeft: '10px', minWidth: '300px' }">
+          <el-button-group>
+            <el-button
+              type="primary"
+              @click="loadDataList"
+              :style="{ marginLeft: '10px' }"
+              >搜索</el-button
+            >
+            <el-button
+              type="success"
+              @click="auditBatch"
+              :disabled="selectBatchList.length === 0"
+              >批量审批</el-button
+            >
+            <el-button
+              type="danger"
+              @click="delBatch"
+              :disabled="selectBatchList.length === 0"
+              >批量删除</el-button
+            >
+          </el-button-group>
+        </el-col>
+      </el-row>
+    </el-form>
+  </div>
   <div class="data-list">
-    <div class="top-panel">
-      <el-form :model="searchFormData" label-width="50px">
-        <el-row>
-          <el-col :span="4">
-            <el-form-item label="标题" prop="titleFuzzy">
-              <el-input
-                clearable
-                placeholder="请输入标题"
-                v-model.trim="searchFormData.titleFuzzy"
-                @keyup.native="loadDataList"
-              ></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span="4">
-            <el-form-item label="昵称" prop="nickNameFuzzy">
-              <el-input
-                clearable
-                placeholder="请输入标题"
-                v-model.trim="searchFormData.nickNameFuzzy"
-                @keyup.native="loadDataList"
-              ></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span="4">
-            <el-form-item label="版块" prop="boardIds">
-              <el-cascader
-                clearable
-                :options="boardList"
-                placeholder="请选择版块"
-                v-model.trim="searchFormData.boardIds"
-                :style="{ width: '100%' }"
-                :props="boardProps"
-              />
-            </el-form-item>
-          </el-col>
-          <el-col :span="4">
-            <el-form-item label="附件" prop="attachmentType">
-              <el-select
-                clearable
-                placeholder="请选择"
-                v-model.trim="searchFormData.attachmentType"
-                :style="{ width: '100%' }"
-              >
-                <el-option :value="1" label="有附件"></el-option>
-                <el-option :value="0" label="无附件"></el-option>
-              </el-select>
-            </el-form-item>
-          </el-col>
-          <el-col :span="4">
-            <el-form-item label="状态" prop="status">
-              <el-select
-                clearable
-                placeholder="请选择状态"
-                v-model.trim="searchFormData.status"
-                :style="{ width: '100%' }"
-              >
-                <el-option :value="-1" label="已删除"></el-option>
-                <el-option :value="0" label="待审核"></el-option>
-                <el-option :value="1" label="已审核"></el-option>
-              </el-select>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row>
-          <el-col :span="4">
-            <el-form-item label="置顶" prop="topType">
-              <el-select
-                clearable
-                placeholder="请选择"
-                v-model.trim="searchFormData.topType"
-                :style="{ width: '100%' }"
-              >
-                <el-option :value="0" label="未置顶"></el-option>
-                <el-option :value="1" label="已置顶"></el-option>
-              </el-select>
-            </el-form-item>
-          </el-col>
-          <el-col :span="4" :style="{ paddingLeft: '10px', minWidth: '300px' }">
-            <el-button-group>
-              <el-button
-                type="primary"
-                @click="loadDataList"
-                :style="{ marginLeft: '10px' }"
-                >搜索</el-button
-              >
-              <el-button
-                type="success"
-                @click="auditBatch"
-                :disabled="selectBatchList.length === 0"
-                >批量审批</el-button
-              >
-              <el-button
-                type="danger"
-                @click="delBatch"
-                :disabled="selectBatchList.length === 0"
-                >批量删除</el-button
-              >
-            </el-button-group>
-          </el-col>
-        </el-row>
-      </el-form>
-    </div>
     <Table
       ref="tableRef"
       :columns="columns"
@@ -288,7 +288,7 @@ const delBatch = () => {
 const tableRef = ref(null);
 const tableOptions = ref({
   selectType: "checkbox",
-  extHeight: 0,
+  extHeight: 100,
 });
 const columns = [
   {

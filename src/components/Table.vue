@@ -110,7 +110,7 @@ const props = defineProps({
   },
 });
 // 顶部200 内容区域距离顶部20 内容上下内间距15*2 分页区域高度46
-const topHeight = 200 + 20 + 30 + 46;
+const topHeight = 100 + 20 + 30 + 46;
 const tableHeight = ref(
   props.options.tableHeight ||
     window.innerHeight - topHeight - props.options.extHeight ||
