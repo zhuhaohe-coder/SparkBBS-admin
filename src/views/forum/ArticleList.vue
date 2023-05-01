@@ -210,11 +210,15 @@
       </template>
     </Table>
   </div>
+  <!-- 修改版块 -->
   <ArticleBoard ref="articleBoardRef" @reload="loadDataList"></ArticleBoard>
+  <!-- 附件详情 -->
+  <ArticleAttachment ref="articleAttachment"></ArticleAttachment>
 </template>
 
 <script setup>
 import ArticleBoard from "@/views/forum/ArticleBoard.vue";
+import ArticleAttachment from "@/views/forum/ArticleAttachment.vue";
 import { ref, getCurrentInstance } from "vue";
 const { proxy } = getCurrentInstance();
 
@@ -365,7 +369,11 @@ const setRowSelect = (rows) => {
 };
 
 const showComment = (articleId) => {};
-const showAttachment = (nickName, articleId) => {};
+
+const articleAttachment = ref(null);
+const showAttachment = (nickName, articleId) => {
+  articleAttachment.value.show(nickName, articleId);
+};
 // 修改版块
 const articleBoardRef = ref(null);
 const updateBoard = (row) => {

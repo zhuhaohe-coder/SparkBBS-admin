@@ -28,6 +28,8 @@ import Message from "./utils/Message";
 import Confirm from "./utils/Confirm";
 //ajax请求
 import Request from "./utils/Request";
+// 功能
+import Utils from "./utils/Utils";
 const app = createApp(App);
 app.component("Dialog", Dialog);
 app.component("Avatar", Avatar);
@@ -49,5 +51,6 @@ app.config.globalProperties.Verify = Verify;
 app.config.globalProperties.Message = Message;
 app.config.globalProperties.Request = Request;
 app.config.globalProperties.Confirm = Confirm;
+app.config.globalProperties.Utils = Utils;
 
 app.mount("#app");
