@@ -18,6 +18,7 @@ import Dialog from "@/components/Dialog.vue";
 import Avatar from "@/components/Avatar.vue";
 import Cover from "@/components/Cover.vue";
 import Table from "@/components/Table.vue";
+import CoverUpload from "@/components/CoverUpload.vue";
 
 //全局方法
 //表单校验
@@ -35,6 +36,7 @@ app.component("Dialog", Dialog);
 app.component("Avatar", Avatar);
 app.component("Cover", Cover);
 app.component("Table", Table);
+app.component("CoverUpload", CoverUpload);
 app.use(router);
 app.use(ElementPlus);
 app.config.globalProperties.VueCookies = VueCookies;
