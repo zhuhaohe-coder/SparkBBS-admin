@@ -46,7 +46,7 @@ app.config.globalProperties.globalInfo = {
   avatarUrl: "/api/file/getAvatar/",
   imageUrl: "/api/file/getImage/",
   // 访客端地址
-  webDomain: "http://www.baidu.com",
+  webDomain: import.meta.env.VITE_WEB_DOMAIN,
 };
 //定义全局方法
 app.config.globalProperties.Verify = Verify;

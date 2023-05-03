@@ -38,6 +38,7 @@
               v-model.trim="formData.checkCode"
               size="large"
               :style="{ width: '155px', 'margin-right': '12px' }"
+              @keyup.native="login"
             >
               <template #prefix>
                 <span class="iconfont icon-checkcode"></span>
